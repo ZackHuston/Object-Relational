@@ -5,18 +5,36 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
+  Product.findAll({
+    include: [ProductTag]
+  })
+  .then((product)=> res.json(product))
+  .catch((err)=> res.status(500).json(err))
+
   // find all products
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
+  Product.findOne({
+    where: {
+      id: req.params.id
+    
+    },
+    include: [ProductTag]
+  })
+  .then((categorys)=> res.json(categorys))
+  .catch((err)=> res.status(500).json(err))
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 });
 
 // create new product
 router.post('/', (req, res) => {
+  Product.create(req.body)
+  .then((product)=> res.json(product))
+  .catch((err)=> res.status(500).json(err))
   /* req.body should look like this...
     {
       product_name: "Basketball",
